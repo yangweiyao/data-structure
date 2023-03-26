@@ -1,5 +1,7 @@
 package com.yangweiyao.sort.random;
 
+import java.util.Random;
+
 /**
  * 数组生成器
  * @Author: yangweiyao
@@ -15,8 +17,10 @@ public class ArraysRandom {
 
     public static int[] createArray(int length) {
         int[] arr = new int[length];
+        Random random = new Random();
+        int bound = Math.max(length, 100);
         for (int i = 0; i < length; i++) {
-            arr[i] = (int) (Math.random() * length);
+            arr[i] = random.nextInt(bound);
         }
         return arr;
     }
