@@ -1,4 +1,6 @@
-package com.yangweiyao.sort.random;
+package com.yangweiyao.sort;
+
+import com.yangweiyao.sort.random.ArraysRandom;
 
 import java.util.Arrays;
 
@@ -12,9 +14,9 @@ public class ShellSort {
     public static void main(String[] args) {
 
         int[] nums = {45, 61, 92, 29, 17, 94, 83};
-
+//        int[] nums = ArraysRandom.createArray(10);
         long start = System.currentTimeMillis();
-        exchangeShellSort(nums);
+        insertShellSort(nums);
         System.out.println("排序cost: " + (System.currentTimeMillis() - start));
 
         System.out.println(Arrays.toString(nums));
@@ -52,7 +54,7 @@ public class ShellSort {
                         isExchange = true;
                     }
                     if(!isExchange) {
-                        // 如果没有发生swag，直接退出
+                        // 如果没有发生swag，直接跳出
                         break;
                     }
                     isExchange = false;
@@ -61,9 +63,27 @@ public class ShellSort {
         }
     }
 
+    /**
+     * 希尔排序-插入法：类似二分法思想
+     * [45, 61, 92, 29, 17, 94, 83]，pointer = length / 2 = 7 / 2 = 3
+     * @param nums 需要排序的数组
+     */
     public static void insertShellSort(int[] nums) {
         if (nums == null || nums.length == 0) return;
-        // TODO
+
+        int[] copy = Arrays.copyOf(nums, nums.length);
+
+        for(int i = nums.length / 2; i > 0; i /= 2) {
+            for(int j = i; j < nums.length; j++) {
+                int index = j;
+                int temp = nums[index];
+                while (index - i >= 0 && temp < nums[index - i]) {
+                    nums[index] = nums[index - i];
+                    index -= i;
+                    nums[index] = temp;
+                }
+            }
+        }
     }
 
 }
