@@ -1,4 +1,6 @@
-package com.yangweiyao.sort.random;
+package com.yangweiyao.sort;
+
+import com.yangweiyao.sort.random.ArraysRandom;
 
 import java.util.Arrays;
 
