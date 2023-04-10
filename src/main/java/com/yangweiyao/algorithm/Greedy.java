@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * @Author yangweiyao
  * @CreateTime 2023-04-10 11:17
- * @Description 贪心算法
+ * @Description 贪心算法：不从整体最优上加以考虑，只做出在某种意义上的局部最优解。
  **/
 public class Greedy {
 
