@@ -5,43 +5,41 @@ package com.yangweiyao.structure.list;
  * @CreateTime 2023-04-17 11:19
  * @Description 单链表
  **/
-public class SingleLinkList {
+public class SingleLinkList<T> {
 
     /** 头结点 */
-    private final LinkListNode head;
+    private final Node<T> head;
 
     /** 长度 */
     private int length;
 
     public SingleLinkList() {
-        this.head = new LinkListNode();
+        this.head = new Node<>();
     }
 
-    public SingleLinkList(Integer data, LinkListNode next) {
+    public SingleLinkList(T data, Node<T> next) {
         // 头结点
-        this.head = new LinkListNode();
+        this.head = new Node<>();
         // 首元结点
-        LinkListNode node = new LinkListNode();
-        node.setData(data);
-        node.setNext(next);
+        Node<T> node = new Node<>();
+        node.data = data;
+        node.next = next;
         // 设置头结点下个结点
-        head.setNext(node);
+        head.next = node;
     }
 
     /**
      * 默认往链表最后插入元素
      * @param data 元素
-     * @return 结点
      */
-    public LinkListNode insert(Integer data) {
-        LinkListNode newNode = new LinkListNode(data);
-        LinkListNode point = head;
-        while (point.getNext() != null) {
-            point = point.getNext();
+    public void insert(T data) {
+        Node<T> newNode = new Node<>(data);
+        Node<T> point = head;
+        while (point.next != null) {
+            point = point.next;
         }
-        point.setNext(newNode);
+        point.next = newNode;
         length++;
-        return newNode;
     }
 
     /**
@@ -49,20 +47,18 @@ public class SingleLinkList {
      * @param index 索引
      * @param data 元素
      */
-    public LinkListNode insertByIndex(int index, Integer data) {
+    public void insertByIndex(int index, T data) {
         if(index > length || index - 1 < 0) {
-            return insert(data);
+            return;
         }
         index--;
-        LinkListNode point = head;
+        Node<T> point = head;
         while (index != 0) {
-            point = point.getNext();
+            point = point.next;
             index--;
         }
-        LinkListNode newNode = new LinkListNode(data, point.getNext());
-        point.setNext(newNode);
+        point.next = new Node<>(data, point.next);
         length++;
-        return newNode;
     }
 
     /**
@@ -70,16 +66,16 @@ public class SingleLinkList {
      * @param index 索引
      * @return 元素
      */
-    public Integer getByIndex(int index) {
+    public T getByIndex(int index) {
         if(index > length || index < 0) {
             return null;
         }
-        LinkListNode point = head;
+        Node<T> point = head;
         while (index != 0) {
-            point = point.getNext();
+            point = point.next;
             index--;
         }
-        return point.getData();
+        return point.data;
     }
 
     /**
@@ -88,55 +84,39 @@ public class SingleLinkList {
      * @return 索引
      */
     public int getByData(Integer data) {
-        LinkListNode point = head;
+        Node<T> point = head;
         int index = 0;
-        while (point.getNext() != null) {
-            point = point.getNext();
+        while (point.next != null) {
+            point = point.next;
             index++;
-            if(point.getData().equals(data)) {
+            if(point.data.equals(data)) {
                 return index;
             }
         }
-        if(index == length && !point.getData().equals(data)) {
-            return 0;
+        if(index == length && !point.data.equals(data)) {
+            index = -1;
         }
         return index;
     }
 
-    /**
-     * 遍历单链表
-     */
-    public void print() {
-        LinkListNode point = head;
-        StringBuilder builder = new StringBuilder("SingleLinkList: ");
-        while (point.getNext() != null) {
-            point = point.getNext();
-            builder.append("{").append(point.getData());
-            if(point.getNext() != null) {
-                builder.append("-[").append(point.getNext().getData()).append("]");
-            }
-            builder.append("}").append("->");
-        }
-        System.out.println(builder.substring(0, builder.length() - 2));
-    }
 
     /**
      * 按位置索引删除元素
      * @param index 索引
      * @return 删除元素
      */
-    public Integer deleteByIndex(int index) {
+    public T deleteByIndex(int index) {
         if(index > length || index - 1 < 0) {
             return null;
         }
         index--;
-        LinkListNode point = head;
+        Node<T> point = head;
         while (index != 0) {
-            point = point.getNext();
+            point = point.next;
             index--;
         }
-        Integer result = point.getNext().getData();
-        point.setNext(point.getNext().getNext());
+        T result = point.next.data;
+        point.next = point.next.next;
         length--;
         return result;
     }
@@ -145,17 +125,53 @@ public class SingleLinkList {
      * 合并链表
      * @param singleLinkList 链表
      */
-    public void marge(SingleLinkList singleLinkList) {
-        LinkListNode point = head;
+    public void marge(SingleLinkList<T> singleLinkList) {
+        Node<T> point = head;
         length = length + singleLinkList.length;
-        while (point.getNext() != null) {
-            point = point.getNext();
+        while (point.next != null) {
+            point = point.next;
         }
-        point.setNext(singleLinkList.head.getNext());
+        point.next = singleLinkList.head.next;
     }
 
     public int size() {
         return length;
     }
 
+    @Override
+    public String toString() {
+        Node<T> point = head;
+        StringBuilder builder = new StringBuilder("SingleLinkList: ");
+        while (point.next != null) {
+            point = point.next;
+            builder.append("{").append(point.data);
+            if(point.next != null) {
+                builder.append("-[").append(point.next.data).append("]");
+            }
+            builder.append("}").append("->");
+        }
+        return builder.substring(0, builder.length() - 2);
+    }
+
+    private static class Node<T> {
+
+        /** 结点的数据域 */
+        private T data;
+
+        /** 下一个结点 */
+        private Node<T> next;
+
+        public Node() {
+        }
+
+        public Node(T data) {
+            this.data = data;
+        }
+
+        public Node(T data, Node<T> next) {
+            this.data = data;
+            this.next = next;
+        }
+
+    }
 }
